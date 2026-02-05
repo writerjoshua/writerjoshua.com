@@ -1,9 +1,9 @@
 // The Inkwell — SPA Application with GitHub API Auto-Discovery
 // CRITICAL FIXES APPLIED
 
-const BASE_URL = '/the-inkwell';
+const BASE_URL = '/writerjoshua.com';
 const GITHUB_OWNER = 'writerjoshua';
-const GITHUB_REPO = 'the-inkwell';
+const GITHUB_REPO = 'writerjoshua.com';
 const GITHUB_API = 'https://api.github.com/repos';
 const POSTS_PATH = 'assets/posts';
 const GITHUB_TOKEN = ''; // Set to your token to avoid rate limiting
@@ -95,8 +95,8 @@ function loadPage(page) {
         }).catch(err => {
             handleError(contentEl, err, 'Error loading posts');
         });
-    } else if (page === 'about-beau' || page === 'library') {
-        renderMarkdownPage(page === 'about-beau' ? 'about' : 'library').then(html => {
+    } else if (page === 'about-josh' || page === 'library') {
+        renderMarkdownPage(page === 'about-josh' ? 'about' : 'library').then(html => {
             contentEl.innerHTML = html;
             setupPostInteractions();
             window.scrollTo(0, 0);
