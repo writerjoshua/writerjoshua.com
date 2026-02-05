@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Poetry and Prose by American Romance Writer, Beau Holliday">
+    <meta name="author" content="Beau Holliday">
+    
+    <!-- Dynamic Social Meta Tags -->
+    <meta property="og:title" content="The Inkwell — Poetry and Prose by Beau Holliday">
+    <meta property="og:description" content="Essays in Romance & Reverie">
+    <meta property="og:image" content="/assets/media/beauholliday.jpg">
+    <meta property="og:url" content="https://www.beauholliday.com">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Inkwell — Poetry and Prose by Beau Holliday">
+    <meta name="twitter:description" content="Essays in Romance & Reverie">
+    <meta name="twitter:image" content="/assets/media/beauholliday.jpg">
+    
+    <title>The Inkwell — Poetry and Prose by Beau Holliday</title>
+    
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- JavaScript Disabled Fallback -->
+    <noscript>
+        <div style="padding: 2rem; text-align: center; background: #fff5f0; border-bottom: 2px solid #c9685a;">
+            <p style="color: #c9685a; font-family: 'Courier Prime', monospace; font-size: 1rem;">
+                This site requires JavaScript to function. Please enable JavaScript in your browser settings.
+            </p>
+        </div>
+    </noscript>
+
+    <!-- Side Navigation -->
+    <aside id="side-nav" class="side-nav">
+        <div class="side-nav-header">
+            <h2>The Inkwell</h2>
+            <button id="close-nav" class="close-nav" aria-label="Close navigation menu">✕</button>
+        </div>
+        
+        <nav class="side-nav-menu">
+            <div class="nav-item">
+                <button class="nav-link" data-page="home">Home</button>
+            </div>
+            <div class="nav-section">
+                <button class="nav-section-btn" data-section="read" role="menuitem">
+                    <span>Read</span>
+                    <span class="arrow">›</span>
+                </button>
+                <div class="nav-submenu" id="read-menu">
+                    <button class="nav-link" data-page="about-beau">About Beau</button>
+                    <button class="nav-link" data-page="poetry">Poetry</button>
+                    <button class="nav-link" data-page="sentiment">Sentiment</button>
+                    <button class="nav-link" data-page="stories">Stories</button>
+                </div>
+            </div>
+            <div class="nav-section">
+                <button class="nav-section-btn" data-section="write" role="menuitem">
+                    <span>Write</span>
+                    <span class="arrow">›</span>
+                </button>
+                <div class="nav-submenu" id="write-menu">
+                    <button class="nav-link" data-page="prompts">Prompts</button>
+                </div>
+            </div>
+            <div class="nav-section">
+                <button class="nav-section-btn" data-section="keep" role="menuitem">
+                    <span>Keep</span>
+                    <span class="arrow">›</span>
+                </button>
+                <div class="nav-submenu" id="keep-menu">
+                    <button class="nav-link" data-page="library">Library</button>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Static Header -->
+        <header id="header">
+            <div class="header-content">
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+                <h1>The Inkwell</h1>
+                <div class="header-spacer"></div>
+            </div>
+            <p class="subtitle">Poetry and Prose by American Romance Writer, Beau Holliday</p>
+        </header>
+
+        <!-- Dynamic Content Area -->
+        <div class="container" id="content">
+            <!-- Content loads here -->
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav id="bottom-nav" class="bottom-nav">
+        <button class="bottom-nav-btn active" data-page="home">Home</button>
+        <button class="bottom-nav-btn" data-page="everything">Read</button>
+        <button class="bottom-nav-btn" data-page="prompts">Write</button>
+        <button class="bottom-nav-btn" data-page="library">Keep</button>
+    </nav>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
