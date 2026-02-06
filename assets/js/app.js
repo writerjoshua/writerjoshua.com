@@ -299,25 +299,16 @@ async function renderContact() {
 // NAVIGATION & PAGE LOADING
 // ============================================================================
 
-function updateMetaTags(title, description, image) {
-  document.title = title;
-  const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute('content', title);
-  
-  const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute('content', description);
-  
-  const ogImage = document.querySelector('meta[property="og:image"]');
-  if (ogImage) ogImage.setAttribute('content', BASE_PATH + image);
-  
-  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-  if (twitterTitle) twitterTitle.setAttribute('content', title);
-  
-  const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-  if (twitterDesc) twitterDesc.setAttribute('content', description);
-  
-  const twitterImage = document.querySelector('meta[name="twitter:image"]');
-  if (twitterImage) twitterImage.setAttribute('content', BASE_PATH + image);
+function updateMetaTags(title, description, image, twitterTitle, twitterDescription, keywords) {
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', image);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', twitterTitle || title);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', twitterDescription || description);
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', image);
+    if (keywords) {
+        document.querySelector('meta[name="keywords"]')?.setAttribute('content', keywords);
+    }
 }
 
 function setActiveNavButton(page) {
