@@ -1,5 +1,5 @@
 ---
-title: Blog Post
+title: blog post
 date:2026-02-05
 excerpt: This is my first blog post.
 image: assets/media/writerjoshua.jpg
