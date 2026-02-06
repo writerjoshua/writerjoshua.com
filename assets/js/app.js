@@ -70,19 +70,42 @@ function handleError(element, error, message) {
 // FILE FETCHING & PARSING
 // ============================================================================
 
-async function fetchMarkdownFile(path) {
-  try {
-    // Prepend BASE_PATH to relative paths
-    const fullPath = path.startsWith('http') ? path : BASE_PATH + path;
-    console.log('Fetching:', fullPath);
-    
-    const response = await fetch(fullPath);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.text();
-  } catch (err) {
-    console.error(`Failed to fetch ${path}:`, err);
-    return null;
-  }
+async function fetchMarkdownFiles(type) {
+    try {
+        // First, get list of files from GitHub API
+        const url = `https://api.github.com/repos/writerjoshua/writerjoshua.com/contents/assets/posts/${type}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            console.log(`No files found in ${type}`);
+            return [];
+        }
+
+        const files = await response.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md') && f.type === 'file');
+
+        if (mdFiles.length === 0) return [];
+
+        const posts = [];
+
+        for (const file of mdFiles) {
+            try {
+                const raw = await fetch(`https://raw.githubusercontent.com/writerjoshua/writerjoshua.com/main/assets/posts/${type}/${file.name}`);
+                if (raw.ok) {
+                    const markdown = await raw.text();
+                    const post = parseMarkdown(markdown, type, file.name);
+                    if (post) posts.push(post);
+                }
+            } catch (err) {
+                console.log(`Error loading ${file.name}:`, err);
+            }
+        }
+
+        return posts;
+    } catch (err) {
+        console.log(`Error in fetchMarkdownFiles for ${type}:`, err);
+        return [];
+    }
 }
 
 async function fetchMarkdownFiles(folder) {
