@@ -4,6 +4,7 @@ twitter-title: "Joshua Lucero"
 twitter-description: "Author, Researcher, and Artist for WriterJoshua"
 keywords: "writer, keratoconus, athlete, art, science, arscience84, seejoshsphotos, writerjoshua, joshwriteswell"
 ---
+
 # About Josh
 ## Hello, My name is Josh.
 I've been reading since before pre-school and have been actively writing since Kindergarten. I turned 40 in August, and you may expect that, by now, I have a fancy writing job or have published books. That's not quite the case. My web domain is WriterJoshua.com but, to simply label myself as a writer would be insufficient. 
