@@ -4,6 +4,8 @@
 
 // Base path for GitHub Pages subdirectory
 const BASE_PATH = '/writerjoshua.com/';
+const GITHUB_OWNER = 'writerjoshua';
+const GITHUB_REPO = 'writerjoshua.com';
 
 // ============================================================================
 // UTILITY FUNCTIONS
