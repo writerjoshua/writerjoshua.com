@@ -72,42 +72,42 @@ function handleError(element, error, message) {
 // FILE FETCHING & PARSING
 // ============================================================================
 
-async function fetch(type, filename) {
-    try {
-        // First, get list of files from GitHub API
-        const url = `https://api.github.com/repos/writerjoshua/writerjoshua.com/contents/assets/posts/${type}`;
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            console.log(`No files found in ${type}`);
-            return [];
-        }
-
-        const files = await response.json();
-        const mdFiles = files.filter(f => f.name.endsWith('.md') && f.type === 'file');
-
-        if (mdFiles.length === 0) return [];
-
-        const posts = [];
-
-        for (const file of mdFiles) {
-            try {
-                const raw = await fetch(`https://raw.githubusercontent.com/writerjoshua/writerjoshua.com/main/assets/posts/${type}/${file.name}`);
-                if (raw.ok) {
-                    const markdown = await raw.text();
-                    const post = parseMarkdown(markdown, type, file.name);
-                    if (post) posts.push(post);
-                }
-            } catch (err) {
-                console.log(`Error loading ${file.name}:`, err);
-            }
-        }
-
-        return posts;
-    } catch (err) {
-        console.log(`Error in fetchMarkdownFiles for ${type}:`, err);
-        return [];
+// Helper: fetch list of files from GitHub (does not shadow global `fetch`)
+async function fetchPostsFromGitHub(type) {
+  try {
+    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/assets/posts/${type}`;
+    const response = await globalThis.fetch(url);
+    if (!response.ok) {
+      console.log(`No files found in ${type}`);
+      return [];
     }
+    const files = await response.json();
+    return files.filter(f => f.name && f.name.endsWith('.md') && f.type === 'file');
+  } catch (err) {
+    console.log(`Error fetching list for ${type}:`, err);
+    return [];
+  }
+}
+
+// Fetch a single markdown file. Try local/relative path first, then fall back to GitHub raw.
+async function fetchMarkdownFile(path) {
+  try {
+    // Attempt relative fetch (use BASE_PATH for GitHub Pages subdirectory deployments)
+    const relResponse = await globalThis.fetch((BASE_PATH || '') + path);
+    if (relResponse.ok) return await relResponse.text();
+  } catch (e) {
+    // ignore and fallback
+  }
+
+  try {
+    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${path}`;
+    const response = await globalThis.fetch(rawUrl);
+    if (response.ok) return await response.text();
+    return null;
+  } catch (err) {
+    console.log(`Error fetching markdown file ${path}:`, err);
+    return null;
+  }
 }
 
 async function fetchMarkdownFiles(folder) {

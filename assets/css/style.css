@@ -345,7 +345,7 @@ body.dark-theme::before {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, rgba(51, 51, 51, 0.9), rgba(212, 175, 55, 0.9)), url("/writerjoshua.com/assets/media/writerjoshua02.jpg");
+  background: linear-gradient(135deg, rgba(51, 51, 51, 0.9), rgba(212, 175, 55, 0.9)), url("../media/writerjoshua02.jpg");
   background-size: cover;
   background-position: center;
   color: white;
@@ -358,7 +358,7 @@ body.dark-theme::before {
 }
 
 body.dark-theme .hero {
-  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(212, 175, 55, 0.9)), url("/writerjoshua.com/assets/media/writerjoshua02.jpg");
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(212, 175, 55, 0.9)), url("../media/writerjoshua02.jpg");
 }
 
 .hero::before {
