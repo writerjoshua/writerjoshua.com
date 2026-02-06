@@ -72,7 +72,7 @@ function handleError(element, error, message) {
 // FILE FETCHING & PARSING
 // ============================================================================
 
-async function fetchMarkdownFiles(type, filename) {
+async function fetch(type, filename) {
     try {
         // First, get list of files from GitHub API
         const url = `https://api.github.com/repos/writerjoshua/writerjoshua.com/contents/assets/posts/${type}`;
