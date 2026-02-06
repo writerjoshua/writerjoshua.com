@@ -1,5 +1,9 @@
 // writerjoshua.com - Complete SPA Application
 // Production-ready with theme toggle, markdown parsing, and full navigation
+// FIXED FOR GITHUB PAGES SUBDIRECTORY DEPLOYMENT
+
+// Base path for GitHub Pages subdirectory
+const BASE_PATH = '/writerjoshua.com/';
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -68,11 +72,15 @@ function handleError(element, error, message) {
 
 async function fetchMarkdownFile(path) {
   try {
-    const response = await fetch(path);
-    if (!response.ok) throw new Error('HTTP ' + response.status);
+    // Prepend BASE_PATH to relative paths
+    const fullPath = path.startsWith('http') ? path : BASE_PATH + path;
+    console.log('Fetching:', fullPath);
+    
+    const response = await fetch(fullPath);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.text();
   } catch (err) {
-    console.error('Failed to fetch ' + path + ':', err);
+    console.error(`Failed to fetch ${path}:`, err);
     return null;
   }
 }
@@ -89,7 +97,7 @@ async function fetchMarkdownFiles(folder) {
   const posts = [];
   
   for (const filename of files) {
-    const path = 'assets/posts/' + folder + '/' + filename;
+    const path = `assets/posts/${folder}/${filename}`;
     const content = await fetchMarkdownFile(path);
     
     if (content) {
@@ -110,11 +118,11 @@ async function fetchMarkdownFiles(folder) {
 }
 
 async function fetchMarkdownPage(pageName) {
-  const path = 'assets/posts/' + pageName + '.md';
+  const path = `assets/posts/${pageName}.md`;
   const content = await fetchMarkdownFile(path);
   
   if (!content) {
-    throw new Error('Page ' + pageName + ' not found');
+    throw new Error(`Page ${pageName} not found`);
   }
   
   const parsed = parseMarkdown(content);
@@ -126,47 +134,78 @@ async function fetchMarkdownPage(pageName) {
 // ============================================================================
 
 function renderHero() {
-  return '<div class="hero"><div class="hero-content"><h2>Josh</h2><p>Author, Researcher, Artist</p><p style="margin-top: 1.5rem; font-size: 1rem;">Exploring the intersections of art, science, and creative innovation.</p></div></div>';
+  return `<div class="hero"><div class="hero-content"><h2>Josh</h2><p>Author, Researcher, Artist</p><p style="margin-top: 1.5rem; font-size: 1rem;">Exploring the intersections of art, science, and creative innovation.</p></div></div>`;
 }
 
 function renderWriteCard(post) {
-  const id = post.id;
-  const title = post.title;
-  const date = post.date;
-  const excerpt = post.excerpt;
-  const content = post.content;
-  
-  const dateStr = new Date(date).toLocaleDateString('en-US', { 
+  const dateStr = new Date(post.date).toLocaleDateString('en-US', { 
     year: 'numeric', 
     month: 'short', 
     day: 'numeric' 
   });
   
-  return '<div class="card write" data-post-id="' + id + '" data-type="feed"><div class="card-content"><h2>' + escapeHtml(title) + '</h2><p class="write-excerpt">' + escapeHtml(excerpt) + '</p><div class="write-text">' + escapeHtml(content).substring(0, 300) + '...</div><div class="card-footer"><span class="timestamp">' + dateStr + '</span><div class="action-buttons"><button class="action-btn read-write-btn" data-post-id="' + id + '">Read Full</button><button class="action-btn share-btn" data-post-id="' + id + '">Share</button></div></div><div class="share-preview"><div class="share-preview-meta"><strong>writerjoshua.com</strong> — Feed</div><div class="share-preview-meta">"' + escapeHtml(title) + '"</div></div></div></div>';
+  return `
+    <div class="card write" data-post-id="${post.id}" data-type="feed">
+      <div class="card-content">
+        <h2>${escapeHtml(post.title)}</h2>
+        <p class="write-excerpt">${escapeHtml(post.excerpt)}</p>
+        <div class="write-text">${escapeHtml(post.content).substring(0, 300)}...</div>
+        <div class="card-footer">
+          <span class="timestamp">${dateStr}</span>
+          <div class="action-buttons">
+            <button class="action-btn read-write-btn" data-post-id="${post.id}">Read Full</button>
+            <button class="action-btn share-btn" data-post-id="${post.id}">Share</button>
+          </div>
+        </div>
+        <div class="share-preview">
+          <div class="share-preview-meta"><strong>writerjoshua.com</strong> — Feed</div>
+          <div class="share-preview-meta">"${escapeHtml(post.title)}"</div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderBlogCard(post) {
-  const id = post.id;
-  const title = post.title;
-  const date = post.date;
-  const excerpt = post.excerpt;
-  
-  const dateStr = new Date(date).toLocaleDateString('en-US', { 
+  const dateStr = new Date(post.date).toLocaleDateString('en-US', { 
     year: 'numeric', 
     month: 'short', 
     day: 'numeric' 
   });
-  const year = new Date(date).getFullYear();
+  const year = new Date(post.date).getFullYear();
   
-  return '<div class="card blog" data-post-id="' + id + '" data-type="blog" data-year="' + year + '"><div class="card-content"><div class="blog-date">' + year + '</div><h2>' + escapeHtml(title) + '</h2><p class="blog-excerpt">' + escapeHtml(excerpt) + '</p><div class="card-footer"><span class="timestamp">' + dateStr + '</span><div class="action-buttons"><button class="action-btn read-blog-btn" data-post-id="' + id + '">Read Post</button><button class="action-btn share-btn" data-post-id="' + id + '">Share</button></div></div><div class="share-preview"><div class="share-preview-meta"><strong>writerjoshua.com</strong> — Blog</div><div class="share-preview-meta">"' + escapeHtml(title) + '"</div></div></div></div>';
+  return `
+    <div class="card blog" data-post-id="${post.id}" data-type="blog" data-year="${year}">
+      <div class="card-content">
+        <div class="blog-date">${year}</div>
+        <h2>${escapeHtml(post.title)}</h2>
+        <p class="blog-excerpt">${escapeHtml(post.excerpt)}</p>
+        <div class="card-footer">
+          <span class="timestamp">${dateStr}</span>
+          <div class="action-buttons">
+            <button class="action-btn read-blog-btn" data-post-id="${post.id}">Read Post</button>
+            <button class="action-btn share-btn" data-post-id="${post.id}">Share</button>
+          </div>
+        </div>
+        <div class="share-preview">
+          <div class="share-preview-meta"><strong>writerjoshua.com</strong> — Blog</div>
+          <div class="share-preview-meta">"${escapeHtml(post.title)}"</div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderProjectCard(project) {
-  const id = project.id;
-  const title = project.title;
-  const excerpt = project.excerpt;
-  
-  return '<div class="card project" data-post-id="' + id + '" data-type="projects"><div class="card-content"><h2>' + escapeHtml(title) + '</h2><p class="project-description">' + escapeHtml(excerpt) + '</p><a href="#" class="project-link" data-project-id="' + id + '">View Project →</a></div></div>';
+  return `
+    <div class="card project" data-post-id="${project.id}" data-type="projects">
+      <div class="card-content">
+        <h2>${escapeHtml(project.title)}</h2>
+        <p class="project-description">${escapeHtml(project.excerpt)}</p>
+        <a href="#" class="project-link" data-project-id="${project.id}">View Project →</a>
+      </div>
+    </div>
+  `;
 }
 
 // ============================================================================
@@ -177,14 +216,14 @@ async function renderHome() {
   try {
     const feedPosts = await fetchMarkdownFiles('feed');
     const latestFeed = feedPosts
-      .sort(function(a, b) { return new Date(b.date) - new Date(a.date); })
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, 2);
     
     const feedHtml = latestFeed.length > 0 
-      ? latestFeed.map(function(post) { return renderWriteCard(post); }).join('')
-      : '<div class="empty-state"><p>No posts yet. </p></div>';
+      ? latestFeed.map(post => renderWriteCard(post)).join('')
+      : '<div class="empty-state"><p>No posts yet.</p></div>';
     
-    return renderHero() + '<div style="margin-top: 3rem;"><h2 class="section-title">Latest from Feed</h2><div class="feed">' + feedHtml + '</div></div>';
+    return renderHero() + `<div style="margin-top: 3rem;"><h2 class="section-title">Latest from Feed</h2><div class="feed">${feedHtml}</div></div>`;
   } catch (err) {
     console.error('Error rendering home:', err);
     throw err;
@@ -196,11 +235,11 @@ async function renderFeed() {
     const posts = await fetchMarkdownFiles('feed');
     
     if (posts.length === 0) {
-      return '<div class="empty-state"><p>No writes yet. </p></div>';
+      return '<div class="empty-state"><p>No writes yet.</p></div>';
     }
     
-    const sortedPosts = posts.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
-    return '<h2 class="section-title">Feed</h2><div class="feed">' + sortedPosts.map(function(post) { return renderWriteCard(post); }).join('') + '</div>';
+    const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return `<h2 class="section-title">Feed</h2><div class="feed">${sortedPosts.map(post => renderWriteCard(post)).join('')}</div>`;
   } catch (err) {
     console.error('Error rendering feed:', err);
     throw err;
@@ -212,11 +251,11 @@ async function renderBlog() {
     const posts = await fetchMarkdownFiles('blog');
     
     if (posts.length === 0) {
-      return '<div class="empty-state"><p>No blog posts yet. </p></div>';
+      return '<div class="empty-state"><p>No blog posts yet.</p></div>';
     }
     
-    const sortedPosts = posts.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
-    return '<h2 class="section-title">Blog</h2><div class="feed">' + sortedPosts.map(function(post) { return renderBlogCard(post); }).join('') + '</div>';
+    const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return `<h2 class="section-title">Blog</h2><div class="feed">${sortedPosts.map(post => renderBlogCard(post)).join('')}</div>`;
   } catch (err) {
     console.error('Error rendering blog:', err);
     throw err;
@@ -228,10 +267,10 @@ async function renderProjects() {
     const projects = await fetchMarkdownFiles('projects');
     
     if (projects.length === 0) {
-      return '<div class="empty-state"><p>No projects yet. </p></div>';
+      return '<div class="empty-state"><p>No projects yet.</p></div>';
     }
     
-    return '<h2 class="section-title">Projects</h2><div class="feed">' + projects.map(function(project) { return renderProjectCard(project); }).join('') + '</div>';
+    return `<h2 class="section-title">Projects</h2><div class="feed">${projects.map(project => renderProjectCard(project)).join('')}</div>`;
   } catch (err) {
     console.error('Error rendering projects:', err);
     throw err;
@@ -262,36 +301,34 @@ async function renderContact() {
 
 function updateMetaTags(title, description, image) {
   document.title = title;
-  var ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogTitle = document.querySelector('meta[property="og:title"]');
   if (ogTitle) ogTitle.setAttribute('content', title);
   
-  var ogDesc = document.querySelector('meta[property="og:description"]');
+  const ogDesc = document.querySelector('meta[property="og:description"]');
   if (ogDesc) ogDesc.setAttribute('content', description);
   
-  var ogImage = document.querySelector('meta[property="og:image"]');
-  if (ogImage) ogImage.setAttribute('content', image);
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  if (ogImage) ogImage.setAttribute('content', BASE_PATH + image);
   
-  var twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
   if (twitterTitle) twitterTitle.setAttribute('content', title);
   
-  var twitterDesc = document.querySelector('meta[name="twitter:description"]');
+  const twitterDesc = document.querySelector('meta[name="twitter:description"]');
   if (twitterDesc) twitterDesc.setAttribute('content', description);
   
-  var twitterImage = document.querySelector('meta[name="twitter:image"]');
-  if (twitterImage) twitterImage.setAttribute('content', image);
+  const twitterImage = document.querySelector('meta[name="twitter:image"]');
+  if (twitterImage) twitterImage.setAttribute('content', BASE_PATH + image);
 }
 
 function setActiveNavButton(page) {
-  var sideLinks = document.querySelectorAll('.side-nav-menu .nav-link');
-  sideLinks.forEach(function(link) {
+  document.querySelectorAll('.side-nav-menu .nav-link').forEach(link => {
     link.classList.remove('active');
     if (link.dataset.page === page) {
       link.classList.add('active');
     }
   });
   
-  var bottomBtns = document.querySelectorAll('.bottom-nav-btn');
-  bottomBtns.forEach(function(btn) {
+  document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
     btn.classList.remove('active');
     if (btn.dataset.page === page) {
       btn.classList.add('active');
@@ -322,7 +359,7 @@ async function loadPage(page) {
     contentEl.innerHTML = html;
     setupPostInteractions();
     setActiveNavButton(page);
-    updateMetaTags(pageConfig.title, pageConfig.desc, '/assets/media/writerjoshua02.jpg');
+    updateMetaTags(pageConfig.title, pageConfig.desc, 'assets/media/writerjoshua02.jpg');
     window.scrollTo(0, 0);
   } catch (err) {
     handleError(contentEl, err, 'Error loading page');
@@ -339,7 +376,6 @@ function setupThemeToggle() {
   
   const savedTheme = localStorage.getItem('theme') || 'light';
   
-  // Set initial theme
   if (savedTheme === 'dark') {
     document.body.classList.add('dark-theme');
     updateThemeToggleUI('dark');
@@ -348,8 +384,7 @@ function setupThemeToggle() {
     updateThemeToggleUI('light');
   }
   
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', function() {
+  themeToggle.addEventListener('click', () => {
     const isDarkTheme = document.body.classList.toggle('dark-theme');
     const newTheme = isDarkTheme ? 'dark' : 'light';
     localStorage.setItem('theme', newTheme);
@@ -378,19 +413,17 @@ function updateThemeToggleUI(theme) {
 // ============================================================================
 
 function setupNavigation() {
-  var sideLinks = document.querySelectorAll('.side-nav-menu .nav-link');
-  sideLinks.forEach(function(link) {
-    link.addEventListener('click', function() {
-      const page = this.dataset.page;
+  document.querySelectorAll('.side-nav-menu .nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const page = link.dataset.page;
       loadPage(page);
       closeSideNav();
     });
   });
   
-  var bottomBtns = document.querySelectorAll('.bottom-nav-btn');
-  bottomBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const page = this.dataset.page;
+  document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = btn.dataset.page;
       loadPage(page);
     });
   });
@@ -403,29 +436,28 @@ function setupSideNav() {
   
   if (!sideNav || !menuToggle) return;
   
-  menuToggle.addEventListener('click', function() {
+  menuToggle.addEventListener('click', () => {
     sideNav.classList.add('open');
   });
   
   if (closeNav) {
-    closeNav.addEventListener('click', function() {
+    closeNav.addEventListener('click', () => {
       closeSideNav();
     });
   }
   
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', (e) => {
     if (!sideNav.contains(e.target) && !menuToggle.contains(e.target)) {
       closeSideNav();
     }
   });
   
-  var sectionBtns = document.querySelectorAll('.nav-section-btn');
-  sectionBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const section = this.dataset.section;
+  document.querySelectorAll('.nav-section-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.dataset.section;
       const submenu = document.getElementById(section + '-menu');
       
-      this.classList.toggle('open');
+      btn.classList.toggle('open');
       if (submenu) submenu.classList.toggle('open');
     });
   });
@@ -441,29 +473,26 @@ function closeSideNav() {
 // ============================================================================
 
 function setupPostInteractions() {
-  var readBtns = document.querySelectorAll('.read-write-btn, .read-blog-btn');
-  readBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const card = this.closest('.card');
+  document.querySelectorAll('.read-write-btn, .read-blog-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.card');
       const postId = card.dataset.postId;
       console.log('Reading post: ' + postId);
     });
   });
   
-  var shareBtns = document.querySelectorAll('.share-btn');
-  shareBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const card = this.closest('.card');
+  document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.card');
       const preview = card.querySelector('.share-preview');
       if (preview) preview.classList.toggle('visible');
     });
   });
   
-  var projectLinks = document.querySelectorAll('.project-link');
-  projectLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
+  document.querySelectorAll('.project-link').forEach(link => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
-      const projectId = this.dataset.projectId;
+      const projectId = link.dataset.projectId;
       console.log('Viewing project: ' + projectId);
     });
   });
@@ -473,10 +502,11 @@ function setupPostInteractions() {
 // INITIALIZATION
 // ============================================================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('App initializing with BASE_PATH:', BASE_PATH);
   setupNavigation();
   setupSideNav();
   setupThemeToggle();
   loadPage('home');
-  updateMetaTags('writerjoshua.com', 'Author, Researcher, Artist', '/assets/media/writerjoshua02.jpg');
+  updateMetaTags('writerjoshua.com', 'Author, Researcher, Artist', 'assets/media/writerjoshua02.jpg');
 });
