@@ -1,9 +1,9 @@
 ---
-title: Blog Post
+title: SeeJoshsPhotos 
 date: 2026-02-05
-excerpt: This is my first blog post.
+excerpt: Photography and Visual Media Blog
 image: assets/media/writerjoshua.jpg
-twitter-title: "Blogging on my own"
-twitter-description: "This is how to leverage the metadata for sharing"
-keywords: "ai, blog, claude, writerjoshua, technology, computers, claude, haiku"
+twitter-title: "SeeJoshsPhotos"
+twitter-description: "Photography and Visual Media Blog by Joshua Lucero"
+keywords: "photographer, videographer, visual media, SeeJoshsPhotos, WriterJoshua"
 ---

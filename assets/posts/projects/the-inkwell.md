@@ -1,9 +1,9 @@
 ---
-title: Blog Post
+title: The Inkwell
 date: 2026-02-05
-excerpt: This is my first blog post.
+excerpt: Poetry and Prose by Romance Author, Beau Holliday
 image: assets/media/writerjoshua.jpg
 twitter-title: "Blogging on my own"
-twitter-description: "This is how to leverage the metadata for sharing"
-keywords: "ai, blog, claude, writerjoshua, technology, computers, claude, haiku"
+twitter-description: "Poetry and Prose by Romance Author, Beau Holliday"
+keywords: "SincerelyBeau, romance, poetry, love stories, writing prompts, erotica, sensuality"
 ---

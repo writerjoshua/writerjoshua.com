@@ -1,9 +1,9 @@
 ---
-title: Blog Post
+title: SoulSeesBest
 date: 2026-02-05
-excerpt: This is my first blog post.
+excerpt: Visually Challenged Mixed Media rooted in the Southwest US
 image: assets/media/writerjoshua.jpg
-twitter-title: "Blogging on my own"
-twitter-description: "This is how to leverage the metadata for sharing"
-keywords: "ai, blog, claude, writerjoshua, technology, computers, claude, haiku"
+twitter-title: "SoulSeesBest"
+twitter-description: "Visually challenged mixed media rooted in the Southwest US"
+keywords: "SoulSeesBest, mixed media, artist, clay, paint, handcrafted, idm, electronica, music, keratoconus, legally blind"
 ---
