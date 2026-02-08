@@ -6,7 +6,7 @@ excerpt: It's okay to be concerned about the hype. It's legitimately exciting bu
 image: assets/media/writerjoshua02.jpg
 twitter-title: "Don't be intimidated by AI"
 twitter-description: "It's okay to be concerned about the hype. It's legitimately exciting but, it's not quite living up to the dream, as it were. However, I believe it will, and relatively quickly."
-keywords: "ai, blog, claude, writerjoshua, technology, computers, claude, haiku"
+keywords: "ai, blog, WriterJoshua, technology, computers, artificial intelligence, data center, hyperscaler, future"
 ---
 
 Don't be intimidated by AI
