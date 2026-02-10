@@ -6,7 +6,7 @@ const GITHUB_OWNER = 'writerjoshua';
 const GITHUB_REPO = 'writerjoshua.com';
 const GITHUB_API = 'https://api.github.com/repos';
 const POSTS_PATH = 'assets/posts';
-const GITHUB_TOKEN = ''; // Set to your token to avoid rate limiting
+const GITHUB_TOKEN = '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'; // Set to your token to avoid rate limiting
 
 // Post cache to avoid re-fetching
 const postCache = {};
