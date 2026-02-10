@@ -1,9 +1,9 @@
 // The Inkwell — SPA Application with GitHub API Auto-Discovery
 // CRITICAL FIXES APPLIED
 
-const BASE_URL = '/the-inkwell/';
+const BASE_URL = '/writerjoshua.com/';
 const GITHUB_OWNER = 'writerjoshua';
-const GITHUB_REPO = 'the-inkwell';
+const GITHUB_REPO = 'writerjoshua.com';
 const GITHUB_API = 'https://api.github.com/repos';
 const POSTS_PATH = 'assets/posts';
 const GITHUB_TOKEN = ''; // Set to your token to avoid rate limiting
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupSideNav();
     loadPage('home');
-    updateMetaTags('The Inkwell', 'Poetry and Prose by American Romance Writer, Beau Holliday', '/assets/media/beauholliday.jpg');
+    updateMetaTags('WriterJoshua', 'Author, Researcher, Artist', '/assets/media/writerjoshua.jpg');
 });
 
 // Setup Side Navigation
