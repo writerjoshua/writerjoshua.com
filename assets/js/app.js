@@ -132,7 +132,7 @@ function handleError(contentEl, err, defaultMsg) {
 async function fetchFilesFromGitHub(path) {
     try {
         const headers = GITHUB_TOKEN ? { 'Authorization': `token ${GITHUB_TOKEN}` } : {};
-        const url = `${GITHUB_API}/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${POSTS_PATH}/${path}`;
+        const url = `${GITHUB_API}/${GITHUB_OWNER}/${GITHUB_REPO}/${POSTS_PATH}/${path}`;
         const response = await fetch(url, { headers });
         
         // FIX #3: Check for rate limiting
