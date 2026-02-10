@@ -428,7 +428,7 @@ async function renderCollection(type) {
 // Render Post Card
 function renderPostCard(post) {
     const { type, id, title, date, author, image, excerpt, content, cover } = post;
-    const dateStr = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const dateStr = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', time: 'numeric'});
 
     if (type === 'poetry') {
         return `
@@ -476,7 +476,7 @@ function renderPostCard(post) {
                     <h2 class="blog-title">${escapeHtml(title)}</h2>
                     <p class="blog-excerpt">${escapeHtml(excerpt)}</p>
                     <div class="card-footer">
-                        <span class="timestamp">${dateStr},${timeStr}</span>
+                        <span class="timestamp">${dateStr}</span>
                         <div class="action-buttons">
                             <button class="action-btn read-blog-btn">Read Full Blog</button>
                             <button class="action-btn share-btn">Share</button>
@@ -522,7 +522,7 @@ function renderStoryPage(post) {
                     </div>
                     
                     <div class="card-footer">
-                        <span class="timestamp">${dateStr}, ${timeStr} </span>
+                        <span class="timestamp">${dateStr}</span>
                         <div class="action-buttons">
                             <button class="action-btn back-to-feed">Back to ${currentSourcePage === 'blog' ? 'Blog' : 'Feed'}</button>
                             <button class="action-btn share-btn">Share</button>
