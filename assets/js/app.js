@@ -255,9 +255,9 @@ function parseMarkdown(markdown, type, filename) {
         type,
         title: metadata.title || '',
         date: metadata.date || new Date().toISOString().split('T')[0],
-        author: metadata.author || 'Beau Holliday',
-        image: metadata.image || '/assets/media/beauholliday.jpg',
-        cover: metadata.cover || metadata.image || '/assets/media/beauholliday.jpg',
+        author: metadata.author || 'Joshua Lucero',
+        image: metadata.image || '/assets/media/writerjoshua.jpg',
+        cover: metadata.cover || metadata.image || '/assets/media/writerjoshua02.jpg',
         excerpt: metadata.excerpt || content.substring(0, 150),
         content
     };
@@ -308,17 +308,17 @@ function parseContentMarkdown(markdown) {
 // Render Home Page
 async function renderHome() {
     try {
-        const [allPoetry, allSentiment, allStories, allPrompts] = await Promise.all([
+        const [allPoetry, allSentiment, allBlog, allPrompts] = await Promise.all([
             fetchMarkdownFiles('poetry'),
             fetchMarkdownFiles('sentiment'),
-            fetchMarkdownFiles('stories'),
+            fetchMarkdownFiles('blog'),
             fetchMarkdownFiles('prompts')
         ]);
 
         const allPosts = [
             ...allPoetry,
             ...allSentiment,
-            ...allStories,
+            ...allBlog,
             ...allPrompts
         ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -347,9 +347,9 @@ function renderHero() {
     return `
         <div class="hero">
             <div class="hero-content">
-                <h2>The Inkwell</h2>
-                <p>Essays in Romance & Reverie</p>
-                <p class="hero-tagline">Poetry and prose exploring desire, vulnerability, and the spaces between words.</p>
+                <h2>WriterJoshua</h2>
+                <p>Author, Researcher, Artist</p>
+                <p class="hero-tagline">Blog, Opinion, Research, and Art by Joshua Lucero</p>
             </div>
         </div>
     `;
@@ -382,17 +382,17 @@ async function renderLibraryPreview() {
 // Render Feed
 async function renderFeed() {
     try {
-        const [poetry, sentiment, stories, prompts] = await Promise.all([
+        const [poetry, sentiment, blog, prompts] = await Promise.all([
             fetchMarkdownFiles('poetry'),
             fetchMarkdownFiles('sentiment'),
-            fetchMarkdownFiles('stories'),
+            fetchMarkdownFiles('blog'),
             fetchMarkdownFiles('prompts')
         ]);
 
         const allPosts = [
             ...poetry,
             ...sentiment,
-            ...stories,
+            ...blog,
             ...prompts
         ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -464,20 +464,20 @@ function renderPostCard(post) {
         `;
     }
 
-    if (type === 'stories') {
+    if (type === 'blog') {
         return `
-            <div class="card story" data-post-id="${id}" data-type="stories">
-                <div class="story-cover">
+            <div class="card story" data-post-id="${id}" data-type="blog">
+                <div class="blog-cover">
                     <img src="${BASE_URL}${cover}" alt="${escapeHtml(title)}" loading="lazy" onerror="this.src='/assets/media/placeholder.jpg'">
                 </div>
                 <div class="story-info">
-                    <div class="card-header">📖 Short Story</div>
-                    <h2 class="story-title">${escapeHtml(title)}</h2>
-                    <p class="story-excerpt">${escapeHtml(excerpt)}</p>
+                    <div class="card-header">Blog</div>
+                    <h2 class="blog-title">${escapeHtml(title)}</h2>
+                    <p class="blog-excerpt">${escapeHtml(excerpt)}</p>
                     <div class="card-footer">
-                        <span class="timestamp">${dateStr}</span>
+                        <span class="timestamp">${dateStr},${timeStr}</span>
                         <div class="action-buttons">
-                            <button class="action-btn read-story-btn">Read Full Story</button>
+                            <button class="action-btn read-blog-btn">Read Full Blog</button>
                             <button class="action-btn share-btn">Share</button>
                         </div>
                     </div>
@@ -501,29 +501,29 @@ function renderPostCard(post) {
     }
 }
 
-// Render Story Page
+// Render Blog Page
 function renderStoryPage(post) {
     if (!post) return '';
 
-    const dateStr = new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const dateStr = new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', time: 'numeric'});
 
     return `
-        <div class="story-page">
-            <div class="card story">
+        <div class="blog-page">
+            <div class="card blog">
                 <div class="card-content">
-                    <div class="card-header">📖 Short Story</div>
-                    <h2 class="story-title">${escapeHtml(post.title)}</h2>
+                    <div class="card-header">Blog</div>
+                    <h2 class="blog-title">${escapeHtml(post.title)}</h2>
                     
-                    <div class="story-body">
-                        <div class="story-text">
+                    <div class="blog-body">
+                        <div class="blog-text">
                             ${escapeHtml(post.content)}
                         </div>
                     </div>
                     
                     <div class="card-footer">
-                        <span class="timestamp">${dateStr}</span>
+                        <span class="timestamp">${dateStr}, ${timeStr} </span>
                         <div class="action-buttons">
-                            <button class="action-btn back-to-feed">Back to ${currentSourcePage === 'stories' ? 'Stories' : 'Feed'}</button>
+                            <button class="action-btn back-to-feed">Back to ${currentSourcePage === 'blog' ? 'Blog' : 'Feed'}</button>
                             <button class="action-btn share-btn">Share</button>
                         </div>
                     </div>
@@ -602,8 +602,8 @@ function setupPostInteractions() {
 
             if (card) {
                 // Card-level share: derive text from card contents and a permalink
-                const titleEl = card.querySelector('h2, .story-title, .prompt-title');
-                const bodyEl = card.querySelector('.poem-text, .sentiment-text, .story-excerpt, .story-text');
+                const titleEl = card.querySelector('h2, .blog-title, .prompt-title');
+                const bodyEl = card.querySelector('.poem-text, .sentiment-text, .blog-excerpt, .blog-text');
                 shareText = (titleEl ? titleEl.textContent.trim() + '\n' : '') + (bodyEl ? bodyEl.textContent.trim().substring(0, 240) : '');
 
                 const postId = card.dataset.postId;
@@ -620,7 +620,7 @@ function setupPostInteractions() {
                 shareUrl = window.location.href;
             }
 
-            const shareTitle = document.title || 'The Inkwell';
+            const shareTitle = document.title || 'WriterJoshua';
 
             if (navigator.share) {
                 try {
@@ -647,15 +647,15 @@ function setupPostInteractions() {
         });
     });
 
-    // Read story button
-    document.querySelectorAll('.read-story-btn').forEach(btn => {
+    // Read blog button
+    document.querySelectorAll('.read-blog-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const card = e.target.closest('.card');
             const postId = card?.dataset.postId;
             
             if (!postId) return;
             
-            const posts = await fetchMarkdownFiles('stories');
+            const posts = await fetchMarkdownFiles('blog');
             const post = posts.find(p => p.id === postId);
             
             // FIX #9: Check if post exists
@@ -665,7 +665,7 @@ function setupPostInteractions() {
             }
             
             const contentEl = document.getElementById('content');
-            contentEl.innerHTML = renderStoryPage(post);
+            contentEl.innerHTML = renderBlogPage(post);
             setupPostInteractions();
             window.scrollTo(0, 0);
         });
