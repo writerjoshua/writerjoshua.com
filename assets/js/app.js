@@ -95,8 +95,8 @@ function loadPage(page) {
         }).catch(err => {
             handleError(contentEl, err, 'Error loading posts');
         });
-    } else if (page === 'about-beau' || page === 'library') {
-        renderMarkdownPage(page === 'about-beau' ? 'about' : 'library').then(html => {
+    } else if (page === 'about-josh' || page === 'library') {
+        renderMarkdownPage(page === 'about-josh' ? 'about' : 'library').then(html => {
             contentEl.innerHTML = html;
             setupPostInteractions();
             window.scrollTo(0, 0);
@@ -255,6 +255,7 @@ function parseMarkdown(markdown, type, filename) {
         type,
         title: metadata.title || '',
         date: metadata.date || new Date().toISOString().split('T')[0],
+        time: metadata.time || new Date().toISOString().split('T')[1].split('.')[0],
         author: metadata.author || 'Joshua Lucero',
         image: metadata.image || '/assets/media/writerjoshua.jpg',
         cover: metadata.cover || metadata.image || '/assets/media/writerjoshua02.jpg',
@@ -394,7 +395,7 @@ async function renderFeed() {
             ...sentiment,
             ...blog,
             ...prompts
-        ].sort((a, b) => new Date(b.date) - new Date(a.date));
+        ].sort((a, b) => new Date(b.date) - new Date(a.date))
 
         if (allPosts.length === 0) {
             return `<div class="empty-state"><p>The pages are still being written. 💌</p></div>`;
@@ -416,7 +417,7 @@ async function renderCollection(type) {
             return `<div class="empty-state"><p>No ${type} posts yet. 💌</p></div>`;
         }
 
-        const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date) - new TimeRanges(b.time) - new TimeRanges(a.time))
         return `<div class="feed">${sortedPosts.map(post => renderPostCard(post)).join('')}</div>`;
     } catch (err) {
         console.error('Error rendering collection:', err);
